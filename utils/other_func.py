@@ -1,6 +1,7 @@
 # - *- coding: utf- 8 - *-
 import requests
 from aiogram import Dispatcher
+from aiogram.types import ParseMode
 
 from data import config
 from data.config import admins
@@ -19,7 +20,7 @@ async def send_all_admin(message, markup=None, not_me=0):
         for admin in admins:
             try:
                 if str(admin) != str(not_me):
-                    await bot.send_message(admin, message, disable_web_page_preview=True)
+                    await bot.send_message(admin, message, disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
             except:
                 pass
     else:
