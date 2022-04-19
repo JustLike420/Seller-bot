@@ -37,7 +37,7 @@ class ThrottlingMiddleware(BaseMiddleware):
             key = f"{self.prefix}_message"
         delta = throttled.rate - throttled.delta
         if throttled.exceeded_count <= 2:
-            await message.reply("<b>❗ Пожалуйста, не спамьте.</b>")
+            await message.reply("<b>❗ NO SPAM.</b>")
         await asyncio.sleep(delta)
         thr = await dispatcher.check_key(key)
 

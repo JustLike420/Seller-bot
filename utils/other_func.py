@@ -11,7 +11,7 @@ from loader import bot
 # Уведомление и проверка обновления при запуске скрипта
 async def on_startup_notify(dp: Dispatcher):
     if len(admins) >= 1:
-        await send_all_admin(f"<b>✅ Бот был успешно запущен</b>")
+        await send_all_admin(f"<b>✅ Bot started</b>")
 
 
 # Рассылка сообщения всем администраторам
@@ -20,7 +20,7 @@ async def send_all_admin(message, markup=None, not_me=0):
         for admin in admins:
             try:
                 if str(admin) != str(not_me):
-                    await bot.send_message(admin, message, disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
+                    await bot.send_message(admin, message, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
             except:
                 pass
     else:

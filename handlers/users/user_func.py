@@ -61,13 +61,10 @@ async def process_gender(message: types.Message, state: FSMContext):
                    InlineKeyboardButton('עשיתי טעות צריך לתקן', callback_data=f"choice_{data['choice']}"))
         await bot.send_message(
             message.chat.id,
-            md.text(
-                md.text('הבוט שואל האם כל הפרטים נכונים?'),
-                md.text(message_text['full name'], md.bold(data['name'])),
-                md.text(message_text['phone number'], md.code(data['phone'])),
-                md.text(message_text['email'], md.code(data['email'])),
-                sep='\n',
-            ),
+            text=f"הבוט שואל האם כל הפרטים נכונים?'\n"
+                 f"{message_text['full name']} {data['name']}\n"
+                 f"{message_text['phone number']} {data['phone']}\n"
+                 f"{message_text['email']} {data['email']}\n",
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
@@ -80,26 +77,19 @@ async def correct(call: types.CallbackQuery, state: FSMContext):
         if data['choice'] == '1':
             await bot.send_message(call.message.chat.id, message_text['request_1'])
         else:
-            await bot.send_message(call.message.chat.id, 'הבוט ישלח לינק לPAYBOX לפי מנוי')
             await bot.send_message(call.message.chat.id, payment_links[data['choice']])
-        await send_all_admin(md.text(
-            md.text('Username:', md.bold('@' + call.from_user.username),
-                    md.text(md.bold(buttons_text[data['choice']])),
-                    md.text(message_text['full name'], md.bold(data['name'])),
-                    md.text(message_text['phone number'], md.code(data['phone'].replace("\\", ""))),
-                    md.text(message_text['email'], md.code(data['email'])),
-                    sep='\n',
-                    )))
-
-        # await send_email(f"@{call.from_user.username}\n"
-        #                  f"{buttons_text[data['choice']]}"
-        #                  f"{message_text['full name']} {data['name']}\n"
-        #                  f"{message_text['phone number']} {data['phone']}\n"
-        #                  f"{message_text['email']} {data['email']}\n")
-        await send_email(f"{data['name']}\n{data['name']}\n{data['phone']}\n{data['email']}\n")
+        await send_all_admin(
+            f"@{call.from_user.username}\n"
+            f"{buttons_text[data['choice']]}\n"
+            f"{message_text['full name']} {data['name']}\n"
+            f"{message_text['phone number']} {data['phone']}\n"
+            f"{message_text['email']} {data['email']}\n")
+        await send_email(f"{buttons_text[data['choice']]}\n{data['name']}\n{data['name']}\n{data['phone']}\n{data['email']}\n")
         await state.finish()
 
 
 @dp.callback_query_handler(text="dagree")
-async def dagree(message: types.Message):
-    await bot.send_message(message.from_user.id, message_text['dagree_mes'])
+async def dagree(call: types.CallbackQuery):
+    markup = types.InlineKeyboardMarkup()
+    await call.message.edit_text(message_text['dagree_mes'], reply_markup=markup)
+    # await call.message.edit_text(message_text['dagree_mes'])
