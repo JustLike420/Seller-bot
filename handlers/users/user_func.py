@@ -84,7 +84,7 @@ async def correct(call: types.CallbackQuery, state: FSMContext):
             f"{message_text['full name']} {data['name']}\n"
             f"{message_text['phone number']} {data['phone']}\n"
             f"{message_text['email']} {data['email']}\n")
-        await send_email(f"{buttons_text[data['choice']]}\n{data['name']}\n{data['name']}\n{data['phone']}\n{data['email']}\n")
+        await send_email(f"{buttons_text[data['choice']]}\n{data['name']}\n{data['phone']}\n{data['email']}\n", call.from_user.username)
         await state.finish()
 
 
